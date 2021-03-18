@@ -54,9 +54,9 @@ export const loadCurrentMeteo = () => {
           pressure
         ) {
           let meteoElement: IMeteoElement = {
-            temp,
+            temp: Math.round(temp),
             description,
-            icon,
+            icon: "http://openweathermap.org/img/wn/" + icon + "@2x.png",
             deg,
             speed,
             feels_like,

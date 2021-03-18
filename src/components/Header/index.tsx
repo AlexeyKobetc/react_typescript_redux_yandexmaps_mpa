@@ -1,12 +1,14 @@
+import { IpcNetConnectOpts } from "node:net";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { setActivePath } from "../../redux/actions/pagesActions";
+import { getCurrentMeteo, isCurrentMeteoLoad } from "../../redux/selectors/meteoSelectors";
 import { getPages, getActivePath } from "../../redux/selectors/pageSelectors";
-import { IAppStore, IPages, IAction } from "../../redux/types/interfaces";
+import { IAppStore, IPages, IAction, IMeteoElement } from "../../redux/types/interfaces";
 
 import styles from "./index.module.css";
 
-const Header = ({ getPages, getActivePath, setActivePath }: IProps) => {
+const Header = ({ getPages, getActivePath, setActivePath, getCurrentMeteo, isCurrentMeteoLoad }: IProps) => {
   return (
     <div className="row d-flex flex-row flex-wrap justify-content-center align-items-center bg-dark text-light pt-4 pb-4">
       <div className="col-12 col-sm-3 text-center text-sm-start">
@@ -38,7 +40,7 @@ const Header = ({ getPages, getActivePath, setActivePath }: IProps) => {
               }}
               className={`text-decoration-none ${styles.nav_link} me-3 ms-3`}
             >
-              {/* {path === "/meteo" && isCurrentMeteoLoad ? (
+              {path === "/meteo" && isCurrentMeteoLoad ? (
                 <div className={`d-flex flex-row flex-wrap pt-1 pb-2 `}>
                   <img src={getCurrentMeteo.icon} style={{ height: "3rem" }} />
                   <div style={{ height: "3rem" }}>
@@ -54,15 +56,15 @@ const Header = ({ getPages, getActivePath, setActivePath }: IProps) => {
                     </h6>
                   </div>
                 </div>
-              ) : ( */}
-              <div
-                className={` ${isActive ? styles.nav_item_active : ``} text-decoration-none ${
-                  styles.nav_item
-                }`}
-              >
-                <h6>{pageName}</h6>
-              </div>
-              {/* )} */}
+              ) : (
+                <div
+                  className={` ${isActive ? styles.nav_item_active : ``} text-decoration-none ${
+                    styles.nav_item
+                  }`}
+                >
+                  <h6>{pageName}</h6>
+                </div>
+              )}
             </NavLink>
           );
         })}
@@ -78,7 +80,9 @@ const Header = ({ getPages, getActivePath, setActivePath }: IProps) => {
 export default connect(
   (store: IAppStore) => ({
     getPages: getPages(store),
-    getActivePath: getActivePath(store)
+    getActivePath: getActivePath(store),
+    getCurrentMeteo: getCurrentMeteo(store),
+    isCurrentMeteoLoad: isCurrentMeteoLoad(store)
   }),
   {
     setActivePath: setActivePath
@@ -88,6 +92,7 @@ export default connect(
 interface IProps {
   getPages: IPages;
   getActivePath: string;
-
+  getCurrentMeteo: IMeteoElement;
+  isCurrentMeteoLoad: boolean | null;
   setActivePath: (pathName: string) => IAction;
 }

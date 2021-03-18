@@ -1,4 +1,5 @@
 import AboutPage from "../components/Pages/AboutPage";
+import JsonPlaceHolderPage from "../components/Pages/JsonPlaceHolderPage";
 import MainPage from "../components/Pages/MainPage";
 import MeteoPage from "../components/Pages/MeteoPage";
 import { IActivePath, IJsonPostsStore, IMeteoStore, IPages } from "./types/interfaces";
@@ -10,20 +11,26 @@ export const pages: IPages = {
     isExact: true,
     isActive: true
   },
+  "{JSON} Placeholder": {
+    path: "/json",
+    component: JsonPlaceHolderPage,
+    isExact: false,
+    isActive: false
+  },
 
   "Open Weather": {
     path: "/meteo",
     component: MeteoPage,
     isExact: false,
     isActive: false
-  },
-
-  Описание: {
-    path: "/about",
-    component: AboutPage,
-    isExact: false,
-    isActive: false
   }
+  // ,
+  // Описание: {
+  //   path: "/about",
+  //   component: AboutPage,
+  //   isExact: false,
+  //   isActive: false
+  // }
 };
 
 export const activePath: IActivePath = { activePath: "/" };

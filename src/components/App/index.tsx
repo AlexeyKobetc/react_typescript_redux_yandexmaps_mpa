@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Route, Switch, useLocation } from "react-router-dom";
+import { loadPortionJsonPosts } from "../../redux/actions/jsonpostsActions";
 import { loadCurrentMeteo, loadFiveDayMeteo } from "../../redux/actions/meteoActions";
 import { setActivePath } from "../../redux/actions/pagesActions";
 import { getPages } from "../../redux/selectors/pageSelectors";
@@ -9,13 +10,20 @@ import { IAction, IAppStore, IPages } from "../../redux/types/interfaces";
 
 import NoPage from "../Pages/NoPage";
 
-const App = ({ getPages, setActivePath, loadCurrentMeteo, loadFiveDayMeteo }: IProps) => {
+const App = ({
+  getPages,
+  setActivePath,
+  loadCurrentMeteo,
+  loadFiveDayMeteo,
+  loadPortionJsonPosts
+}: IProps) => {
   const [currentPath] = useState(useLocation().pathname);
 
   useEffect(() => {
     setActivePath(currentPath);
     loadCurrentMeteo();
     loadFiveDayMeteo();
+    loadPortionJsonPosts();
   }, []);
 
   return (
@@ -38,7 +46,8 @@ export default connect(
   {
     setActivePath,
     loadCurrentMeteo,
-    loadFiveDayMeteo
+    loadFiveDayMeteo,
+    loadPortionJsonPosts
   }
 )(App);
 
@@ -47,4 +56,5 @@ interface IProps {
   setActivePath: (pathName: string) => IAction;
   loadCurrentMeteo: () => void;
   loadFiveDayMeteo: () => void;
+  loadPortionJsonPosts: () => void;
 }
