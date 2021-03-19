@@ -1,12 +1,60 @@
-export interface IAction {
-  type: string;
-  payload?: any;
-}
+import { Action } from "redux";
+import { ThunkAction } from "redux-thunk";
+
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, IAppStore, unknown, Action<string>>;
 
 export interface IAppStore {
   pages: IPagesStore;
   meteo: IMeteoStore;
   jsonposts: IJsonPostsStore;
+  yandexmaps: IYMStore;
+}
+
+export interface IYMStore {
+  ym: any;
+  ymDivContainer: HTMLDivElement | null;
+  ymCurrentMapZoom: number;
+  isYmScriptLoad: boolean | null;
+  isYmApiReady: boolean | null;
+  isYmReady: boolean | null;
+  ymData: IYMData;
+  ymUserGeoMarker: IGeoMarker;
+  ymDestinationGeoMarker: IGeoMarker;
+}
+
+export interface ICoordinates {
+  latitude: number;
+  longitude: number;
+}
+
+export interface IAddress {
+  region: string;
+  fullAddress: string;
+  shortAddress: string;
+}
+
+export interface IPosition {
+  coordinates: ICoordinates;
+  address: IAddress;
+}
+
+export interface IGeoMarker {
+  ymGeoMarker: any;
+  icon: string;
+  id: string;
+  labelTextHeader: string;
+}
+
+export interface IYMData {
+  defaultPosition: { coordinates: ICoordinates; address: IAddress };
+  userPosition: { coordinates: ICoordinates; address: IAddress };
+  destinationPosition: { coordinates: ICoordinates; address: IAddress };
+}
+
+export enum EYmData {
+  DEFAULT_POSITION = "defaultPosition",
+  USER_POSITION = "userPosition",
+  DESTINATION_POSITION = "destinationPosition"
 }
 
 export interface IPagesStore {

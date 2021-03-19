@@ -1,8 +1,8 @@
 import { pagesInit } from "../initialStore";
-import { IAction, IPagesStore } from "../types/interfaces";
-import { EPagesActions } from "../types/types";
+import { IPagesStore } from "../types/interfaces";
+import { EPagesActions, TPageAction } from "../types/types";
 
-export const pageReducer = (state: IPagesStore = pagesInit, action: IAction) => {
+export const pageReducer = (state: IPagesStore = pagesInit, action: TPageAction) => {
   switch (action.type) {
     case EPagesActions.SET_ACTIVE_PATH:
       return { ...state, activePath: { activePath: action.payload } };

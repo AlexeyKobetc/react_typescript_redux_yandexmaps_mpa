@@ -1,8 +1,8 @@
 import { meteoInit } from "../initialStore";
-import { IAction, IMeteoStore } from "../types/interfaces";
-import { EMeteoActions } from "../types/types";
+import { IMeteoStore } from "../types/interfaces";
+import { EMeteoActions, TMeteoAction } from "../types/types";
 
-export const meteoReducer = (state: IMeteoStore = meteoInit, action: IAction) => {
+export const meteoReducer = (state: IMeteoStore = meteoInit, action: TMeteoAction) => {
   switch (action.type) {
     case EMeteoActions.SET_COUNT_METEO_CELLS_ON_SCREEN:
       return { ...state, countMeteoCellsOnScreen: action.payload };

@@ -1,12 +1,12 @@
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 import { setActivePath } from "../../redux/actions/pagesActions";
 import { getPages, getActivePath } from "../../redux/selectors/pageSelectors";
-import { IAppStore, IPages, IAction } from "../../redux/types/interfaces";
+import { IAppStore } from "../../redux/types/interfaces";
 import styles from "./index.module.css";
 
-const Footer = ({ getPages, getActivePath, setActivePath }: IProps) => {
+const Footer = ({ getPages, getActivePath, setActivePath }: Props) => {
   return (
     <div className="row d-flex flex-row flex-wrap justify-content-center align-items-center bg-dark text-light pt-4 pb-4">
       <div className="col-12 col-sm-3 text-center text-sm-start">
@@ -53,18 +53,17 @@ const Footer = ({ getPages, getActivePath, setActivePath }: IProps) => {
   );
 };
 
-export default connect(
-  (store: IAppStore) => ({
-    getPages: getPages(store),
-    getActivePath: getActivePath(store)
-  }),
-  {
-    setActivePath: setActivePath
-  }
-)(Footer);
+const mapState = (store: IAppStore) => ({
+  getPages: getPages(store),
+  getActivePath: getActivePath(store)
+});
 
-interface IProps {
-  getPages: IPages;
-  getActivePath: string;
-  setActivePath: (pathName: string) => IAction;
-}
+const mapDispatch = {
+  setActivePath
+};
+
+const connector = connect(mapState, mapDispatch);
+
+type Props = ConnectedProps<typeof connector> & {};
+
+export default connector(Footer);

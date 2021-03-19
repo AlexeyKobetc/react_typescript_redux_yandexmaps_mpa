@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import { setCountMeteoCellsOnScreen } from "../../../redux/actions/meteoActions";
 import {
   getCountMeteoCellsOnScreen,
   getFiveDayMeteo,
   isFiveDayMeteoLoad
 } from "../../../redux/selectors/meteoSelectors";
-import { IAction, IAppStore, IFiveDayMeteoListElement } from "../../../redux/types/interfaces";
+import { IAppStore } from "../../../redux/types/interfaces";
 import Loading from "../../../sharedcomponents/Loading";
 import { renderHeadRow, renderIconsRow, renderDescriptionRow, renderTemperatureRow } from "./functions";
 
@@ -15,7 +15,7 @@ const MeteoPage = ({
   getFiveDayMeteo,
   setCountMeteoCellsOnScreen,
   getCountMeteoCellsOnScreen
-}: IProps) => {
+}: Props) => {
   const countsMeteoCellsOnScreen = (): void => {
     const widthMeteoCellInPx = 200;
     let countCells = Math.floor(document.body.clientWidth / widthMeteoCellInPx);
@@ -34,7 +34,7 @@ const MeteoPage = ({
 
   return (
     <React.Fragment>
-      {!isFiveDayMeteoLoad ? (
+      {!isFiveDayMeteoLoad || !getFiveDayMeteo.length ? (
         <Loading text={`Загружается прогноз погоды ...`} />
       ) : (
         <React.Fragment>
@@ -65,20 +65,18 @@ const MeteoPage = ({
   );
 };
 
-export default connect(
-  (store: IAppStore) => ({
-    isFiveDayMeteoLoad: isFiveDayMeteoLoad(store),
-    getFiveDayMeteo: getFiveDayMeteo(store),
-    getCountMeteoCellsOnScreen: getCountMeteoCellsOnScreen(store)
-  }),
-  {
-    setCountMeteoCellsOnScreen
-  }
-)(MeteoPage);
+const mapState = (store: IAppStore) => ({
+  isFiveDayMeteoLoad: isFiveDayMeteoLoad(store),
+  getFiveDayMeteo: getFiveDayMeteo(store),
+  getCountMeteoCellsOnScreen: getCountMeteoCellsOnScreen(store)
+});
 
-interface IProps {
-  isFiveDayMeteoLoad: boolean | null;
-  getFiveDayMeteo: IFiveDayMeteoListElement[];
-  getCountMeteoCellsOnScreen: number;
-  setCountMeteoCellsOnScreen: (countMeteoCellsOnScreen: number) => IAction;
-}
+const mapDispatch = {
+  setCountMeteoCellsOnScreen
+};
+
+const connector = connect(mapState, mapDispatch);
+
+type Props = ConnectedProps<typeof connector> & {};
+
+export default connector(MeteoPage);

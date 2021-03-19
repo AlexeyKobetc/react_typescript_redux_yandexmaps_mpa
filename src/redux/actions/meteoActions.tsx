@@ -1,11 +1,11 @@
 import {
-  IAction,
+  AppThunk,
   ICurrentMeteoFetchedData,
   IFiveDayMeteoFetchedData,
   IFiveDayMeteoListElement,
   IMeteoElement
 } from "../types/interfaces";
-import { EMeteoActions } from "../types/types";
+import { EMeteoActions, TMeteoAction } from "../types/types";
 
 const fiveDayMeteoUrl =
   "http://api.openweathermap.org/data/2.5/forecast?lat=44.89&lon=37.32&units=metric&lang=ru&appid=99f8ef29cc8ec4480788db0433e36c0c";
@@ -22,16 +22,9 @@ async function getData<T>(url: string): Promise<T> {
   return await response.json();
 }
 
-export const setCountMeteoCellsOnScreen = (countMeteoCellsOnScreen: number): IAction => ({
-  type: EMeteoActions.SET_COUNT_METEO_CELLS_ON_SCREEN,
-  payload: countMeteoCellsOnScreen
-});
-
-export const loadCurrentMeteo = () => {
+export const loadCurrentMeteo = (): AppThunk => {
   return (dispatch: any) => {
-    dispatch({
-      type: EMeteoActions.START_CURRENT_METEO_DATA_LOAD
-    });
+    dispatch(startCurrentMeteoDataLoad());
     getData<ICurrentMeteoFetchedData>(currentMeteoUrl)
       .then(currentMeteoData => {
         const {
@@ -63,30 +56,21 @@ export const loadCurrentMeteo = () => {
             humidity,
             pressure
           };
-          dispatch({
-            type: EMeteoActions.SUCCESS_CURRENT_METEO_DATA_LOAD,
-            payload: meteoElement
-          });
+          dispatch(successCurrentMeteoDataLoad(meteoElement));
         } else {
-          dispatch({
-            type: EMeteoActions.FAILURE_CURRENT_METEO_DATA_LOAD
-          });
+          dispatch(failureCurrentMeteoDataLoad());
         }
       })
       .catch((error: Error) => {
         console.log(error.message);
-        dispatch({
-          type: EMeteoActions.FAILURE_CURRENT_METEO_DATA_LOAD
-        });
+        dispatch(failureCurrentMeteoDataLoad());
       });
   };
 };
 
-export const loadFiveDayMeteo = () => {
+export const loadFiveDayMeteo = (): AppThunk => {
   return (dispatch: any) => {
-    dispatch({
-      type: EMeteoActions.START_FIVEDAY_METEO_DATA_LOAD
-    });
+    dispatch(startFiveDayMeteoDataLoad());
     getData<IFiveDayMeteoFetchedData>(fiveDayMeteoUrl)
       .then(fiveDayMeteoData => {
         const { cod, list } = fiveDayMeteoData;
@@ -98,21 +82,45 @@ export const loadFiveDayMeteo = () => {
               weather.dt_txt.indexOf("12:00:00") !== -1 ||
               weather.dt_txt.indexOf("18:00:00") !== -1
           );
-          dispatch({
-            type: EMeteoActions.SUCCESS_FIVEDAY_METEO_DATA_LOAD,
-            payload: fiveDayMeteo
-          });
+          dispatch(successFiveDayMeteoDataLoad(fiveDayMeteo));
         } else {
-          dispatch({
-            type: EMeteoActions.FAILURE_FIVEDAY_METEO_DATA_LOAD
-          });
+          dispatch(failureFiveDayMeteoDataLoad());
         }
       })
       .catch((error: Error) => {
         console.log(error.message);
-        dispatch({
-          type: EMeteoActions.FAILURE_FIVEDAY_METEO_DATA_LOAD
-        });
+        dispatch(failureFiveDayMeteoDataLoad());
       });
   };
 };
+
+export const setCountMeteoCellsOnScreen = (countMeteoCellsOnScreen: number): TMeteoAction => ({
+  type: EMeteoActions.SET_COUNT_METEO_CELLS_ON_SCREEN,
+  payload: countMeteoCellsOnScreen
+});
+
+const startCurrentMeteoDataLoad = (): TMeteoAction => ({
+  type: EMeteoActions.START_CURRENT_METEO_DATA_LOAD
+});
+
+const successCurrentMeteoDataLoad = (currentMeteoMeteo: IMeteoElement): TMeteoAction => ({
+  type: EMeteoActions.SUCCESS_CURRENT_METEO_DATA_LOAD,
+  payload: currentMeteoMeteo
+});
+
+const failureCurrentMeteoDataLoad = (): TMeteoAction => ({
+  type: EMeteoActions.FAILURE_CURRENT_METEO_DATA_LOAD
+});
+
+const startFiveDayMeteoDataLoad = (): TMeteoAction => ({
+  type: EMeteoActions.START_FIVEDAY_METEO_DATA_LOAD
+});
+
+const successFiveDayMeteoDataLoad = (fiveDayMeteo: IFiveDayMeteoListElement[]): TMeteoAction => ({
+  type: EMeteoActions.SUCCESS_FIVEDAY_METEO_DATA_LOAD,
+  payload: fiveDayMeteo
+});
+
+const failureFiveDayMeteoDataLoad = (): TMeteoAction => ({
+  type: EMeteoActions.FAILURE_FIVEDAY_METEO_DATA_LOAD
+});

@@ -1,15 +1,15 @@
 import React from "react";
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import { loadPortionJsonPosts } from "../../../redux/actions/jsonpostsActions";
 import { getJsonPosts, isJsonPostsLoad } from "../../../redux/selectors/jsonpostsSelectors";
 import { IAppStore, IPost } from "../../../redux/types/interfaces";
 import Loading from "../../../sharedcomponents/Loading";
 import { renderCard } from "./functions";
 
-const JsonPlaceHolderPage = ({ getJsonPosts, isJsonPostsLoad, loadPortionJsonPosts }: IProps) => {
+const JsonPlaceHolderPage = ({ getJsonPosts, isJsonPostsLoad, loadPortionJsonPosts }: Props) => {
   return (
     <React.Fragment>
-      {!isJsonPostsLoad ? (
+      {!isJsonPostsLoad || !getJsonPosts.length ? (
         <Loading text={`Загружаются посты с {JSON} Placeholder ...`} />
       ) : (
         <React.Fragment>
@@ -40,18 +40,17 @@ const JsonPlaceHolderPage = ({ getJsonPosts, isJsonPostsLoad, loadPortionJsonPos
   );
 };
 
-export default connect(
-  (store: IAppStore) => ({
-    getJsonPosts: getJsonPosts(store),
-    isJsonPostsLoad: isJsonPostsLoad(store)
-  }),
-  {
-    loadPortionJsonPosts
-  }
-)(JsonPlaceHolderPage);
+const mapState = (store: IAppStore) => ({
+  getJsonPosts: getJsonPosts(store),
+  isJsonPostsLoad: isJsonPostsLoad(store)
+});
 
-interface IProps {
-  getJsonPosts: IPost[];
-  isJsonPostsLoad: boolean | null;
-  loadPortionJsonPosts: () => void;
-}
+const mapDispatch = {
+  loadPortionJsonPosts
+};
+
+const connector = connect(mapState, mapDispatch);
+
+type Props = ConnectedProps<typeof connector> & {};
+
+export default connector(JsonPlaceHolderPage);

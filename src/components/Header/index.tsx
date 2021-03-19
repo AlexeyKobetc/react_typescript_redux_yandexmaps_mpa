@@ -1,14 +1,13 @@
-import { IpcNetConnectOpts } from "node:net";
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { setActivePath } from "../../redux/actions/pagesActions";
 import { getCurrentMeteo, isCurrentMeteoLoad } from "../../redux/selectors/meteoSelectors";
 import { getPages, getActivePath } from "../../redux/selectors/pageSelectors";
-import { IAppStore, IPages, IAction, IMeteoElement } from "../../redux/types/interfaces";
+import { IAppStore } from "../../redux/types/interfaces";
 
 import styles from "./index.module.css";
 
-const Header = ({ getPages, getActivePath, setActivePath, getCurrentMeteo, isCurrentMeteoLoad }: IProps) => {
+const Header = ({ getPages, getActivePath, setActivePath, getCurrentMeteo, isCurrentMeteoLoad }: Props) => {
   return (
     <div className="row d-flex flex-row flex-wrap justify-content-center align-items-center bg-dark text-light pt-4 pb-4">
       <div className="col-12 col-sm-3 text-center text-sm-start">
@@ -77,22 +76,19 @@ const Header = ({ getPages, getActivePath, setActivePath, getCurrentMeteo, isCur
   );
 };
 
-export default connect(
-  (store: IAppStore) => ({
-    getPages: getPages(store),
-    getActivePath: getActivePath(store),
-    getCurrentMeteo: getCurrentMeteo(store),
-    isCurrentMeteoLoad: isCurrentMeteoLoad(store)
-  }),
-  {
-    setActivePath: setActivePath
-  }
-)(Header);
+const mapState = (store: IAppStore) => ({
+  getPages: getPages(store),
+  getActivePath: getActivePath(store),
+  getCurrentMeteo: getCurrentMeteo(store),
+  isCurrentMeteoLoad: isCurrentMeteoLoad(store)
+});
 
-interface IProps {
-  getPages: IPages;
-  getActivePath: string;
-  getCurrentMeteo: IMeteoElement;
-  isCurrentMeteoLoad: boolean | null;
-  setActivePath: (pathName: string) => IAction;
-}
+const mapDispatch = {
+  setActivePath
+};
+
+const connector = connect(mapState, mapDispatch);
+
+type Props = ConnectedProps<typeof connector> & {};
+
+export default connector(Header);

@@ -1,8 +1,8 @@
 import { jsonpostsInit } from "../initialStore";
-import { IAction, IJsonPostsStore } from "../types/interfaces";
-import { EJsonPostsActions } from "../types/types";
+import { IJsonPostsStore } from "../types/interfaces";
+import { EJsonPostsActions, TJsonPostsAction } from "../types/types";
 
-export const jsonpostsReducer = (state: IJsonPostsStore = jsonpostsInit, action: IAction) => {
+export const jsonpostsReducer = (state: IJsonPostsStore = jsonpostsInit, action: TJsonPostsAction) => {
   switch (action.type) {
     case EJsonPostsActions.SET_COUNT_FETCHED_JSON_POSTS:
       return {
@@ -13,10 +13,10 @@ export const jsonpostsReducer = (state: IJsonPostsStore = jsonpostsInit, action:
         }
       };
 
-    case EJsonPostsActions.SUCCESS_JSON_POST_DATA_LOAD:
+    case EJsonPostsActions.SUCCESS_JSON_POSTS_DATA_LOAD:
       return { ...state, jsonposts: [...state.jsonposts, action.payload], isPostsLoad: true };
 
-    case EJsonPostsActions.FAILURE_JSON_POST_DATA_LOAD:
+    case EJsonPostsActions.FAILURE_JSON_POSTS_DATA_LOAD:
       return {
         ...state,
         isPostsLoad: state.isPostsLoad === true ? true : false
