@@ -102,7 +102,12 @@ export type JsonPostsActionType =
   | IFailureJsonPostsDataLoad;
 
 export enum YandexMapsActionsTypes {
-  SAVE_POSITION = "SAVE_POSITION"
+  SAVE_POSITION = "SAVE_POSITION",
+  SET_SOURCE_INPUT_VALUE = "SET_SOURCE_INPUT_VALUE",
+  SET_DESTINATION_INPUT_VALUE = "SET_DESTINATION_INPUT_VALUE",
+  INPUT_VALUE_CHANGE = "INPUT_VALUE_CHANGE",
+  INPUT_VALID_CHANGE = "INPUT_VALID_CHANGE",
+  BUTTON_SET_DISABLED = "BUTTON_SET_DISABLED"
 }
 
 interface ISavePosition {
@@ -110,4 +115,35 @@ interface ISavePosition {
   payload: { coordinates: ICoordinates; address: IAddress; namePosition: EYmData };
 }
 
-export type YmActionType = ISavePosition;
+interface ISetSourceInputValue {
+  type: typeof YandexMapsActionsTypes.SET_SOURCE_INPUT_VALUE;
+  payload: { inputName: string; inputValue: string };
+}
+
+interface ISetDestinationInputValue {
+  type: typeof YandexMapsActionsTypes.SET_DESTINATION_INPUT_VALUE;
+  payload: { inputName: string; inputValue: string };
+}
+
+interface IInputValueChange {
+  type: typeof YandexMapsActionsTypes.INPUT_VALUE_CHANGE;
+  payload: { inputName: string; inputValue: string };
+}
+
+interface IInputValidChange {
+  type: typeof YandexMapsActionsTypes.INPUT_VALID_CHANGE;
+  payload: { inputName: string; isValid: boolean };
+}
+
+interface IButtonsetDisabled {
+  type: typeof YandexMapsActionsTypes.BUTTON_SET_DISABLED;
+  payload: { buttonName: string; isDisabled: boolean };
+}
+
+export type YmActionType =
+  | ISavePosition
+  | ISetSourceInputValue
+  | ISetDestinationInputValue
+  | IInputValueChange
+  | IInputValidChange
+  | IButtonsetDisabled;

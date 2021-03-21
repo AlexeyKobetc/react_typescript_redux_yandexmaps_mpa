@@ -12,6 +12,8 @@ export interface IAppStore {
 
 export interface IYMStore {
   ymData: IYMData;
+  ymInputs: IInputs;
+  ymButtons: IButtons;
 }
 
 export interface ICoordinates {
@@ -165,4 +167,31 @@ export interface IUser {
   phone: string;
   username: string;
   website: string;
+}
+
+export interface IInputs {
+  [name: string]: IInput;
+}
+
+export interface IInput {
+  textarea: boolean;
+  labelText: string;
+  placeHolder: string;
+  helpText: string;
+  errorLabel: string;
+  value: string;
+  isValid: boolean | null;
+  isDisable: boolean;
+  maxLen: number;
+  regEx: RegExp[];
+  isYandex: boolean;
+}
+
+export interface IButtons {
+  [name: string]: IButton;
+}
+
+export interface IButton {
+  labelText: string;
+  disabled: boolean;
 }

@@ -35,17 +35,7 @@ export const loadCurrentMeteo = (): AppThunk => {
         } = currentMeteoData;
         const { description, icon } = weather[0];
 
-        if (
-          cod === 200 &&
-          temp &&
-          description &&
-          icon &&
-          deg &&
-          speed &&
-          feels_like &&
-          humidity &&
-          pressure
-        ) {
+        if (cod === 200 && temp && description && icon) {
           let meteoElement: IMeteoElement = {
             temp: Math.round(temp),
             description,
