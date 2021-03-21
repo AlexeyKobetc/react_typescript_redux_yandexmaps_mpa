@@ -17,8 +17,8 @@ export const rootReducer = combineReducers({
   yandexmaps: yandexmapsReducer
 });
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
+export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
-export const AppStore: React.FC = ({ children }) => <Provider store={store}>{children}</Provider>;
+const AppStore: React.FC = ({ children }) => <Provider store={store}>{children}</Provider>;
 
 export default AppStore;

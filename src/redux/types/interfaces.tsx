@@ -11,15 +11,7 @@ export interface IAppStore {
 }
 
 export interface IYMStore {
-  ym: any;
-  ymDivContainer: HTMLDivElement | null;
-  ymCurrentMapZoom: number;
-  isYmScriptLoad: boolean | null;
-  isYmApiReady: boolean | null;
-  isYmReady: boolean | null;
   ymData: IYMData;
-  ymUserGeoMarker: IGeoMarker;
-  ymDestinationGeoMarker: IGeoMarker;
 }
 
 export interface ICoordinates {

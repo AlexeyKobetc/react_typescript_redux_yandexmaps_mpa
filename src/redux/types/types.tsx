@@ -7,18 +7,18 @@ import {
   IPost
 } from "./interfaces";
 
-export enum EPagesActions {
+export enum PagesActionsTypes {
   SET_ACTIVE_PATH = "SET_ACTIVE_PATH"
 }
 
 interface ISetActivePageAction {
-  type: typeof EPagesActions.SET_ACTIVE_PATH;
+  type: typeof PagesActionsTypes.SET_ACTIVE_PATH;
   payload: string;
 }
 
-export type TPageAction = ISetActivePageAction;
+export type PagesActionType = ISetActivePageAction;
 
-export enum EMeteoActions {
+export enum MeteoActionsTypes {
   START_CURRENT_METEO_DATA_LOAD = "START_CURRENT_METEO_DATA_LOAD",
   SUCCESS_CURRENT_METEO_DATA_LOAD = "SUCCESS_CURRENT_METEO_DATA_LOAD",
   FAILURE_CURRENT_METEO_DATA_LOAD = "FAILURE_CURRENT_METEO_DATA_LOAD",
@@ -31,36 +31,36 @@ export enum EMeteoActions {
 }
 
 interface ISetCountMeteoCellsOnScreen {
-  type: typeof EMeteoActions.SET_COUNT_METEO_CELLS_ON_SCREEN;
+  type: typeof MeteoActionsTypes.SET_COUNT_METEO_CELLS_ON_SCREEN;
   payload: number;
 }
 
 interface IStartCurrentMeteoDataLoad {
-  type: typeof EMeteoActions.START_CURRENT_METEO_DATA_LOAD;
+  type: typeof MeteoActionsTypes.START_CURRENT_METEO_DATA_LOAD;
 }
 
 interface ISuccessCurrentMeteoDataLoad {
-  type: typeof EMeteoActions.SUCCESS_CURRENT_METEO_DATA_LOAD;
+  type: typeof MeteoActionsTypes.SUCCESS_CURRENT_METEO_DATA_LOAD;
   payload: IMeteoElement;
 }
 
 interface IFailureCurrentMeteoDataLoad {
-  type: typeof EMeteoActions.FAILURE_CURRENT_METEO_DATA_LOAD;
+  type: typeof MeteoActionsTypes.FAILURE_CURRENT_METEO_DATA_LOAD;
 }
 
 interface IStartFiveDayMeteoDataLoad {
-  type: typeof EMeteoActions.START_FIVEDAY_METEO_DATA_LOAD;
+  type: typeof MeteoActionsTypes.START_FIVEDAY_METEO_DATA_LOAD;
 }
 interface ISuccessFiveDayMeteoDataLoad {
-  type: typeof EMeteoActions.SUCCESS_FIVEDAY_METEO_DATA_LOAD;
+  type: typeof MeteoActionsTypes.SUCCESS_FIVEDAY_METEO_DATA_LOAD;
   payload: IFiveDayMeteoListElement[];
 }
 
 interface IFailureFiveDayMeteoDataLoad {
-  type: typeof EMeteoActions.FAILURE_FIVEDAY_METEO_DATA_LOAD;
+  type: typeof MeteoActionsTypes.FAILURE_FIVEDAY_METEO_DATA_LOAD;
 }
 
-export type TMeteoAction =
+export type MeteoActionType =
   | ISetCountMeteoCellsOnScreen
   | IStartCurrentMeteoDataLoad
   | ISuccessCurrentMeteoDataLoad
@@ -69,7 +69,7 @@ export type TMeteoAction =
   | ISuccessFiveDayMeteoDataLoad
   | IFailureFiveDayMeteoDataLoad;
 
-export enum EJsonPostsActions {
+export enum JsonPostsActionsTypes {
   START_JSON_POSTS_DATA_LOAD = "START_JSON_POST_DATA_LOAD",
   SUCCESS_JSON_POSTS_DATA_LOAD = "SUCCESS_JSON_POST_DATA_LOAD",
   FAILURE_JSON_POSTS_DATA_LOAD = "FAILURE_JSON_POST_DATA_LOAD",
@@ -78,102 +78,36 @@ export enum EJsonPostsActions {
 }
 
 interface ISetCountFetchedPosts {
-  type: typeof EJsonPostsActions.SET_COUNT_FETCHED_JSON_POSTS;
+  type: typeof JsonPostsActionsTypes.SET_COUNT_FETCHED_JSON_POSTS;
   payload: number;
 }
 
 interface IStartJsonPostsDataLoad {
-  type: typeof EJsonPostsActions.START_JSON_POSTS_DATA_LOAD;
+  type: typeof JsonPostsActionsTypes.START_JSON_POSTS_DATA_LOAD;
 }
 
 interface ISuccessJsonPostsDataLoad {
-  type: typeof EJsonPostsActions.SUCCESS_JSON_POSTS_DATA_LOAD;
+  type: typeof JsonPostsActionsTypes.SUCCESS_JSON_POSTS_DATA_LOAD;
   payload: IPost;
 }
 
 interface IFailureJsonPostsDataLoad {
-  type: typeof EJsonPostsActions.FAILURE_JSON_POSTS_DATA_LOAD;
+  type: typeof JsonPostsActionsTypes.FAILURE_JSON_POSTS_DATA_LOAD;
 }
 
-export type TJsonPostsAction =
+export type JsonPostsActionType =
   | ISetCountFetchedPosts
   | IStartJsonPostsDataLoad
   | ISuccessJsonPostsDataLoad
   | IFailureJsonPostsDataLoad;
 
-export enum EYandexMapsActions {
-  START_YM_SCRIPT_LOAD = "START_YM_SCRIPT_LOAD",
-  SUCCESS_YM_SCRIPT_LOAD = "SUCCESS_YM_SCRIPT_LOAD",
-  FAILURE_YM_SCRIPT_LOAD = "FAILURE_YM_SCRIPT_LOAD",
-  ALREADY_YM_SCRIPT_LOADED = "ALREADY_YM_SCRIPT_LOADED",
-
-  START_YM_API_INIT = "START_YM_API_INIT",
-  SUCCESS_YM_API_INIT = "SUCCESS_YM_API_INIT",
-  FAILURE_YM_API_INIT = "FAILURE_YM_API_INIT",
-
-  YM_CREATE = "YM_CREATE",
-  YM_DELETE = "YM_DELETE",
-  YM_READY = "YM_READY",
-
+export enum YandexMapsActionsTypes {
   SAVE_POSITION = "SAVE_POSITION"
 }
 
 interface ISavePosition {
-  type: typeof EYandexMapsActions.SAVE_POSITION;
+  type: typeof YandexMapsActionsTypes.SAVE_POSITION;
   payload: { coordinates: ICoordinates; address: IAddress; namePosition: EYmData };
 }
 
-interface IStartYmScriptLoad {
-  type: typeof EYandexMapsActions.START_YM_SCRIPT_LOAD;
-}
-
-interface ISuccessYmScriptLoad {
-  type: typeof EYandexMapsActions.SUCCESS_YM_SCRIPT_LOAD;
-}
-
-interface IFailureYmScriptLoad {
-  type: typeof EYandexMapsActions.FAILURE_YM_SCRIPT_LOAD;
-}
-
-interface IAlreadyYmScriptLoad {
-  type: typeof EYandexMapsActions.ALREADY_YM_SCRIPT_LOADED;
-}
-
-interface IStartYmApiInit {
-  type: typeof EYandexMapsActions.START_YM_API_INIT;
-}
-
-interface ISuccessYmApiInit {
-  type: typeof EYandexMapsActions.SUCCESS_YM_API_INIT;
-}
-
-interface IFailureYmApiInit {
-  type: typeof EYandexMapsActions.FAILURE_YM_API_INIT;
-}
-
-interface IYmCreate {
-  type: typeof EYandexMapsActions.YM_CREATE;
-  payload: any;
-}
-
-interface IYmDelete {
-  type: typeof EYandexMapsActions.YM_DELETE;
-}
-
-interface IYmReady {
-  type: typeof EYandexMapsActions.YM_READY;
-  payload: boolean;
-}
-
-export type TYmAction =
-  | ISavePosition
-  | IStartYmScriptLoad
-  | ISuccessYmScriptLoad
-  | IFailureYmScriptLoad
-  | IAlreadyYmScriptLoad
-  | IStartYmApiInit
-  | ISuccessYmApiInit
-  | IFailureYmApiInit
-  | IYmCreate
-  | IYmDelete
-  | IYmReady;
+export type YmActionType = ISavePosition;

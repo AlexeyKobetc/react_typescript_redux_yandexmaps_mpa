@@ -1,6 +1,6 @@
 import { getCurrentCountFetchedPosts, getLenOfPostsLoadPortion } from "../selectors/jsonpostsSelectors";
 import { AppThunk, IAppStore, IComment, IPost, IUser } from "../types/interfaces";
-import { EJsonPostsActions, TJsonPostsAction } from "../types/types";
+import { JsonPostsActionsTypes, JsonPostsActionType } from "../types/types";
 
 const postsUrl = "https://jsonplaceholder.typicode.com/posts";
 const commentsUrl = "https://jsonplaceholder.typicode.com/comments";
@@ -75,20 +75,20 @@ export const loadPortionJsonPosts = (): AppThunk => {
   };
 };
 
-const startJsonPostsDataLoad = (): TJsonPostsAction => ({
-  type: EJsonPostsActions.START_JSON_POSTS_DATA_LOAD
+const startJsonPostsDataLoad = (): JsonPostsActionType => ({
+  type: JsonPostsActionsTypes.START_JSON_POSTS_DATA_LOAD
 });
 
-const successJsonPostsDataLoad = (post: IPost): TJsonPostsAction => ({
-  type: EJsonPostsActions.SUCCESS_JSON_POSTS_DATA_LOAD,
+const successJsonPostsDataLoad = (post: IPost): JsonPostsActionType => ({
+  type: JsonPostsActionsTypes.SUCCESS_JSON_POSTS_DATA_LOAD,
   payload: post
 });
 
-const failureJsonPostsDataLoad = (): TJsonPostsAction => ({
-  type: EJsonPostsActions.FAILURE_JSON_POSTS_DATA_LOAD
+const failureJsonPostsDataLoad = (): JsonPostsActionType => ({
+  type: JsonPostsActionsTypes.FAILURE_JSON_POSTS_DATA_LOAD
 });
 
-const setCountFetchedPosts = (countFetchedJsonPosts: number): TJsonPostsAction => ({
-  type: EJsonPostsActions.SET_COUNT_FETCHED_JSON_POSTS,
+const setCountFetchedPosts = (countFetchedJsonPosts: number): JsonPostsActionType => ({
+  type: JsonPostsActionsTypes.SET_COUNT_FETCHED_JSON_POSTS,
   payload: countFetchedJsonPosts
 });

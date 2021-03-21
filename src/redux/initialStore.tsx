@@ -100,27 +100,6 @@ const ymData: IYMData = {
   }
 };
 
-const ymUserGeoMarker: IGeoMarker = {
-  ymGeoMarker: null,
-  icon: "islands#darkGreenStretchyIcon",
-  id: "userGeoMarker",
-  labelTextHeader: "Вы здесь: "
-};
-const ymDestinationGeoMarker: IGeoMarker = {
-  ymGeoMarker: null,
-  icon: "islands#yellowStretchyIcon",
-  id: "destinationGeoMarker",
-  labelTextHeader: "Вам нужно сюда: "
-};
-
 export const ymInit: IYMStore = {
-  ym: null,
-  ymDivContainer: null,
-  ymCurrentMapZoom: 15,
-  isYmScriptLoad: null,
-  isYmApiReady: null,
-  isYmReady: null,
-  ymData,
-  ymUserGeoMarker,
-  ymDestinationGeoMarker
+  ymData
 };

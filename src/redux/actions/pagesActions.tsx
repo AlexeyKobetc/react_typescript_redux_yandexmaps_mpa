@@ -1,6 +1,6 @@
-import { EPagesActions, TPageAction } from "../types/types";
+import { PagesActionsTypes, PagesActionType } from "../types/types";
 
-export const setActivePath = (pathName: string): TPageAction => ({
-  type: EPagesActions.SET_ACTIVE_PATH,
+export const setActivePath = (pathName: string): PagesActionType => ({
+  type: PagesActionsTypes.SET_ACTIVE_PATH,
   payload: pathName
 });

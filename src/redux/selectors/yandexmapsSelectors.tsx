@@ -1,11 +1,24 @@
-import { IAddress, IAppStore, ICoordinates } from "../types/interfaces";
+import { IAddress, IAppStore, ICoordinates, IPosition } from "../types/interfaces";
 
-export const getYmCurrentZoom = (store: IAppStore): number => store.yandexmaps.ymCurrentMapZoom;
-export const getYm = (store: IAppStore): any => store.yandexmaps.ym;
+export const isSetUserPosition = (store: IAppStore): boolean => {
+  return (
+    store.yandexmaps.ymData.userPosition.coordinates.latitude !== 0 &&
+    store.yandexmaps.ymData.userPosition.coordinates.longitude !== 0 &&
+    store.yandexmaps.ymData.userPosition.address.fullAddress !== "" &&
+    store.yandexmaps.ymData.userPosition.address.region !== "" &&
+    store.yandexmaps.ymData.userPosition.address.shortAddress !== ""
+  );
+};
 
-export const isYmScriptLoad = (store: IAppStore): boolean | null => store.yandexmaps.isYmScriptLoad;
-export const isYmApiReady = (store: IAppStore): boolean | null => store.yandexmaps.isYmApiReady;
-export const isYmReady = (store: IAppStore): boolean | null => store.yandexmaps.isYmReady;
+export const isSetDestinationPosition = (store: IAppStore): boolean => {
+  return (
+    store.yandexmaps.ymData.destinationPosition.coordinates.latitude !== 0 &&
+    store.yandexmaps.ymData.destinationPosition.coordinates.longitude !== 0 &&
+    store.yandexmaps.ymData.destinationPosition.address.fullAddress !== "" &&
+    store.yandexmaps.ymData.destinationPosition.address.region !== "" &&
+    store.yandexmaps.ymData.destinationPosition.address.shortAddress !== ""
+  );
+};
 
 export const getCurrentCoordinates = (store: IAppStore): ICoordinates => {
   return store.yandexmaps.ymData.userPosition.coordinates.latitude &&

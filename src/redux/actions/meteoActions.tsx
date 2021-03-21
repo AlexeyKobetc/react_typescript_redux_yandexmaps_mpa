@@ -5,7 +5,7 @@ import {
   IFiveDayMeteoListElement,
   IMeteoElement
 } from "../types/interfaces";
-import { EMeteoActions, TMeteoAction } from "../types/types";
+import { MeteoActionsTypes, MeteoActionType } from "../types/types";
 
 const fiveDayMeteoUrl =
   "http://api.openweathermap.org/data/2.5/forecast?lat=44.89&lon=37.32&units=metric&lang=ru&appid=99f8ef29cc8ec4480788db0433e36c0c";
@@ -23,7 +23,7 @@ async function getData<T>(url: string): Promise<T> {
 }
 
 export const loadCurrentMeteo = (): AppThunk => {
-  return (dispatch: any) => {
+  return dispatch => {
     dispatch(startCurrentMeteoDataLoad());
     getData<ICurrentMeteoFetchedData>(currentMeteoUrl)
       .then(currentMeteoData => {
@@ -69,7 +69,7 @@ export const loadCurrentMeteo = (): AppThunk => {
 };
 
 export const loadFiveDayMeteo = (): AppThunk => {
-  return (dispatch: any) => {
+  return dispatch => {
     dispatch(startFiveDayMeteoDataLoad());
     getData<IFiveDayMeteoFetchedData>(fiveDayMeteoUrl)
       .then(fiveDayMeteoData => {
@@ -94,33 +94,33 @@ export const loadFiveDayMeteo = (): AppThunk => {
   };
 };
 
-export const setCountMeteoCellsOnScreen = (countMeteoCellsOnScreen: number): TMeteoAction => ({
-  type: EMeteoActions.SET_COUNT_METEO_CELLS_ON_SCREEN,
+export const setCountMeteoCellsOnScreen = (countMeteoCellsOnScreen: number): MeteoActionType => ({
+  type: MeteoActionsTypes.SET_COUNT_METEO_CELLS_ON_SCREEN,
   payload: countMeteoCellsOnScreen
 });
 
-const startCurrentMeteoDataLoad = (): TMeteoAction => ({
-  type: EMeteoActions.START_CURRENT_METEO_DATA_LOAD
+const startCurrentMeteoDataLoad = (): MeteoActionType => ({
+  type: MeteoActionsTypes.START_CURRENT_METEO_DATA_LOAD
 });
 
-const successCurrentMeteoDataLoad = (currentMeteoMeteo: IMeteoElement): TMeteoAction => ({
-  type: EMeteoActions.SUCCESS_CURRENT_METEO_DATA_LOAD,
+const successCurrentMeteoDataLoad = (currentMeteoMeteo: IMeteoElement): MeteoActionType => ({
+  type: MeteoActionsTypes.SUCCESS_CURRENT_METEO_DATA_LOAD,
   payload: currentMeteoMeteo
 });
 
-const failureCurrentMeteoDataLoad = (): TMeteoAction => ({
-  type: EMeteoActions.FAILURE_CURRENT_METEO_DATA_LOAD
+const failureCurrentMeteoDataLoad = (): MeteoActionType => ({
+  type: MeteoActionsTypes.FAILURE_CURRENT_METEO_DATA_LOAD
 });
 
-const startFiveDayMeteoDataLoad = (): TMeteoAction => ({
-  type: EMeteoActions.START_FIVEDAY_METEO_DATA_LOAD
+const startFiveDayMeteoDataLoad = (): MeteoActionType => ({
+  type: MeteoActionsTypes.START_FIVEDAY_METEO_DATA_LOAD
 });
 
-const successFiveDayMeteoDataLoad = (fiveDayMeteo: IFiveDayMeteoListElement[]): TMeteoAction => ({
-  type: EMeteoActions.SUCCESS_FIVEDAY_METEO_DATA_LOAD,
+const successFiveDayMeteoDataLoad = (fiveDayMeteo: IFiveDayMeteoListElement[]): MeteoActionType => ({
+  type: MeteoActionsTypes.SUCCESS_FIVEDAY_METEO_DATA_LOAD,
   payload: fiveDayMeteo
 });
 
-const failureFiveDayMeteoDataLoad = (): TMeteoAction => ({
-  type: EMeteoActions.FAILURE_FIVEDAY_METEO_DATA_LOAD
+const failureFiveDayMeteoDataLoad = (): MeteoActionType => ({
+  type: MeteoActionsTypes.FAILURE_FIVEDAY_METEO_DATA_LOAD
 });

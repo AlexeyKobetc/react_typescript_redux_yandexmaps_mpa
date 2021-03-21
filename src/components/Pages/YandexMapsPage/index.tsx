@@ -1,16 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
 import { connect, ConnectedProps } from "react-redux";
-import { destroyMap, initMapEnvironment } from "../../../redux/actions/yandexmapsActions";
-import { getYm, isYmScriptLoad } from "../../../redux/selectors/yandexmapsSelectors";
+
 import { IAppStore } from "../../../redux/types/interfaces";
+import YandexMaps from "./YandexMaps";
 
 import styles from "./index.module.css";
 
-const YandexMapsPage = ({ isYmScriptLoad, initMapEnvironment, destroyMap }: Props) => {
+const ym = new YandexMaps();
+
+const YandexMapsPage = ({}: Props) => {
+  //const [ym] = useState(new YandexMaps());
   const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    initMapEnvironment(divRef.current, isYmScriptLoad);
+    if (divRef.current) ym.initMapEnvironment(divRef.current);
+
+    //initMapEnvironment(divRef.current, isYmScriptLoad);
 
     // const orderDiv = document.querySelector("#orderDiv");
     // const mapDiv = document.querySelector("#mapDiv");
@@ -26,7 +31,7 @@ const YandexMapsPage = ({ isYmScriptLoad, initMapEnvironment, destroyMap }: Prop
     //   mapDiv?.removeEventListener("shown.bs.collapse", changeButtonLabel);
     // };
     return () => {
-      destroyMap();
+      //destroyMap();
     };
   });
 
@@ -61,14 +66,9 @@ const YandexMapsPage = ({ isYmScriptLoad, initMapEnvironment, destroyMap }: Prop
   );
 };
 
-const mapState = (store: IAppStore) => ({
-  isYmScriptLoad: isYmScriptLoad(store)
-});
+const mapState = (store: IAppStore) => ({});
 
-const mapDispatch = {
-  initMapEnvironment,
-  destroyMap
-};
+const mapDispatch = {};
 
 const connector = connect(mapState, mapDispatch);
 

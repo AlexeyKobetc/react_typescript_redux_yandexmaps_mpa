@@ -41,7 +41,7 @@ const Header = ({ getPages, getActivePath, setActivePath, getCurrentMeteo, isCur
             >
               {path === "/meteo" && isCurrentMeteoLoad ? (
                 <div className={`d-flex flex-row flex-wrap pt-1 pb-2 `}>
-                  <img src={getCurrentMeteo.icon} style={{ height: "3rem" }} />
+                  <img src={getCurrentMeteo.icon} style={{ height: "3rem" }} alt="icon" />
                   <div style={{ height: "3rem" }}>
                     <h6
                       className={`${isActive ? styles.nav_item_active : `text-secondary`} small text-center`}

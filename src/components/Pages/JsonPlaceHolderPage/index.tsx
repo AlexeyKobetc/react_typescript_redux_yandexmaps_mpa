@@ -1,10 +1,12 @@
 import React from "react";
 import { connect, ConnectedProps } from "react-redux";
-import { loadPortionJsonPosts } from "../../../redux/actions/jsonpostsActions";
+
 import { getJsonPosts, isJsonPostsLoad } from "../../../redux/selectors/jsonpostsSelectors";
-import { IAppStore, IPost } from "../../../redux/types/interfaces";
-import Loading from "../../../sharedcomponents/Loading";
+import { loadPortionJsonPosts } from "../../../redux/actions/jsonpostsActions";
+import { IAppStore } from "../../../redux/types/interfaces";
 import { renderCard } from "./functions";
+
+import Loading from "../../../sharedcomponents/Loading";
 
 const JsonPlaceHolderPage = ({ getJsonPosts, isJsonPostsLoad, loadPortionJsonPosts }: Props) => {
   return (

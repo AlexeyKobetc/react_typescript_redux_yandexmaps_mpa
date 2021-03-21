@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
 import { connect, ConnectedProps } from "react-redux";
+
+import { renderHeadRow, renderIconsRow, renderDescriptionRow, renderTemperatureRow } from "./functions";
 import { setCountMeteoCellsOnScreen } from "../../../redux/actions/meteoActions";
+import { IAppStore } from "../../../redux/types/interfaces";
 import {
   getCountMeteoCellsOnScreen,
   getFiveDayMeteo,
   isFiveDayMeteoLoad
 } from "../../../redux/selectors/meteoSelectors";
-import { IAppStore } from "../../../redux/types/interfaces";
+
 import Loading from "../../../sharedcomponents/Loading";
-import { renderHeadRow, renderIconsRow, renderDescriptionRow, renderTemperatureRow } from "./functions";
 
 const MeteoPage = ({
   isFiveDayMeteoLoad,
