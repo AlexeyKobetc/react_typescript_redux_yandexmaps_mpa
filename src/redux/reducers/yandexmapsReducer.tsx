@@ -1,9 +1,9 @@
 import { ymInit } from '../initialStore';
-import { IYMStore } from '../types/interfaces';
+import { IYMState } from '../types/interfaces';
 import { YandexMapsActionsTypes, YmActionType } from '../types/types';
 
 export const yandexmapsReducer = (
-    state: IYMStore = ymInit,
+    state: IYMState = ymInit,
     action: YmActionType
 ) => {
     switch (action.type) {

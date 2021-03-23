@@ -6,7 +6,7 @@ import {
     isCurrentMeteoLoad,
 } from '../../redux/selectors/meteoSelectors';
 import { getPages, getActivePath } from '../../redux/selectors/pageSelectors';
-import { IAppStore } from '../../redux/types/interfaces';
+import { IAppState } from '../../redux/types/interfaces';
 
 import styles from './index.module.css';
 
@@ -105,11 +105,11 @@ const Header = ({
     );
 };
 
-const mapState = (store: IAppStore) => ({
-    getPages: getPages(store),
-    getActivePath: getActivePath(store),
-    getCurrentMeteo: getCurrentMeteo(store),
-    isCurrentMeteoLoad: isCurrentMeteoLoad(store),
+const mapState = (state: IAppState) => ({
+    getPages: getPages(state),
+    getActivePath: getActivePath(state),
+    getCurrentMeteo: getCurrentMeteo(state),
+    isCurrentMeteoLoad: isCurrentMeteoLoad(state),
 });
 
 const mapDispatch = {

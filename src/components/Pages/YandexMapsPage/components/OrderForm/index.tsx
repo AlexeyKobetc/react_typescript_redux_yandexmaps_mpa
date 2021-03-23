@@ -3,7 +3,7 @@ import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
 import { ymInputs } from '../../../../../redux/selectors/yandexmapsSelectors';
-import { IAppStore } from '../../../../../redux/types/interfaces';
+import { IAppState } from '../../../../../redux/types/interfaces';
 
 import { Input } from '../Input';
 
@@ -23,7 +23,7 @@ const OrderForm = ({ ymInputs }: Props) => {
     );
 };
 
-const mapState = (store: IAppStore) => ({ ymInputs: ymInputs(store) });
+const mapState = (state: IAppState) => ({ ymInputs: ymInputs(state) });
 
 const mapDispatch = {};
 

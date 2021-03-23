@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 import { setActivePath } from '../../redux/actions/pagesActions';
 import { getPages, getActivePath } from '../../redux/selectors/pageSelectors';
-import { IAppStore } from '../../redux/types/interfaces';
+import { IAppState } from '../../redux/types/interfaces';
 import styles from './index.module.css';
 
 const Footer = ({ getPages, getActivePath, setActivePath }: Props) => {
@@ -55,9 +55,9 @@ const Footer = ({ getPages, getActivePath, setActivePath }: Props) => {
     );
 };
 
-const mapState = (store: IAppStore) => ({
-    getPages: getPages(store),
-    getActivePath: getActivePath(store),
+const mapState = (state: IAppState) => ({
+    getPages: getPages(state),
+    getActivePath: getActivePath(state),
 });
 
 const mapDispatch = {

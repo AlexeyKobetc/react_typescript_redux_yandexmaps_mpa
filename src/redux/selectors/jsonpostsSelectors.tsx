@@ -1,10 +1,10 @@
-import { IAppStore, IPost, IYMStore } from '../types/interfaces';
+import { IAppState, IPost } from '../types/interfaces';
 
-export const getJsonPosts = (store: IAppStore): IPost[] =>
-    store.jsonposts.jsonposts;
-export const isJsonPostsLoad = (store: IAppStore): boolean | null =>
-    store.jsonposts.isPostsLoad;
-export const getLenOfPostsLoadPortion = (store: IAppStore): number =>
-    store.jsonposts.postsCounts.lenOfPostsLoadPortion;
-export const getCurrentCountFetchedPosts = (store: IAppStore): number =>
-    store.jsonposts.postsCounts.currentCountFetchedPosts;
+export const getJsonPosts = (state: IAppState): IPost[] =>
+    state.jsonposts.jsonposts;
+export const isJsonPostsLoad = (state: IAppState): boolean | null =>
+    state.jsonposts.isPostsLoad;
+export const getLenOfPostsLoadPortion = (state: IAppState): number =>
+    state.jsonposts.postsCounts.lenOfPostsLoadPortion;
+export const getCurrentCountFetchedPosts = (state: IAppState): number =>
+    state.jsonposts.postsCounts.currentCountFetchedPosts;

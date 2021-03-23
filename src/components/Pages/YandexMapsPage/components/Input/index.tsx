@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ym } from '../../../../../redux/Store';
 
 import { IInput } from '../../../../../redux/types/interfaces';
@@ -21,6 +21,11 @@ export const Input = ({ name, inputProps }: Props) => {
         regEx,
         maxLen,
     } = inputProps;
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        isYandex && ym.getInputDomElement(name, inputRef.current);
+    });
     return (
         <React.Fragment>
             <div className='form-floating'>
@@ -77,6 +82,7 @@ export const Input = ({ name, inputProps }: Props) => {
                                     : ' is-invalid '
                                 : '')
                         }
+                        ref={inputRef}
                         id={name}
                         name={name}
                         placeholder={placeHolder}

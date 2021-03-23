@@ -1,5 +1,5 @@
-import { IAppStore, IPages } from '../types/interfaces';
+import { IAppState, IPages } from '../types/interfaces';
 
-export const getPages = (store: IAppStore): IPages => store.pages.pages;
-export const getActivePath = (store: IAppStore): string =>
-    store.pages.activePath.activePath;
+export const getPages = (state: IAppState): IPages => state.pages.pages;
+export const getActivePath = (state: IAppState): string =>
+    state.pages.activePath.activePath;

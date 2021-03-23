@@ -1,9 +1,9 @@
 import { jsonpostsInit } from '../initialStore';
-import { IJsonPostsStore } from '../types/interfaces';
+import { IJsonPostsState } from '../types/interfaces';
 import { JsonPostsActionsTypes, JsonPostsActionType } from '../types/types';
 
 export const jsonpostsReducer = (
-    state: IJsonPostsStore = jsonpostsInit,
+    state: IJsonPostsState = jsonpostsInit,
     action: JsonPostsActionType
 ) => {
     switch (action.type) {

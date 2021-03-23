@@ -8,7 +8,7 @@ import {
     renderTemperatureRow,
 } from './functions';
 import { setCountMeteoCellsOnScreen } from '../../../redux/actions/meteoActions';
-import { IAppStore } from '../../../redux/types/interfaces';
+import { IAppState } from '../../../redux/types/interfaces';
 import {
     getCountMeteoCellsOnScreen,
     getFiveDayMeteo,
@@ -85,10 +85,10 @@ const MeteoPage = ({
     );
 };
 
-const mapState = (store: IAppStore) => ({
-    isFiveDayMeteoLoad: isFiveDayMeteoLoad(store),
-    getFiveDayMeteo: getFiveDayMeteo(store),
-    getCountMeteoCellsOnScreen: getCountMeteoCellsOnScreen(store),
+const mapState = (state: IAppState) => ({
+    isFiveDayMeteoLoad: isFiveDayMeteoLoad(state),
+    getFiveDayMeteo: getFiveDayMeteo(state),
+    getCountMeteoCellsOnScreen: getCountMeteoCellsOnScreen(state),
 });
 
 const mapDispatch = {

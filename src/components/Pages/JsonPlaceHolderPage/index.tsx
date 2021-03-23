@@ -5,7 +5,7 @@ import {
     getJsonPosts,
     isJsonPostsLoad,
 } from '../../../redux/selectors/jsonpostsSelectors';
-import { IAppStore } from '../../../redux/types/interfaces';
+import { IAppState } from '../../../redux/types/interfaces';
 import { renderCard } from './functions';
 
 import Loading from '../../../sharedcomponents/Loading';
@@ -21,8 +21,7 @@ const JsonPlaceHolderPage = ({ getJsonPosts, isJsonPostsLoad }: Props) => {
                     <div className='row justify-content-center align-items-center'>
                         <div className='col d-flex flex-column justify-content-center align-items-center m-4'>
                             <h1 className='text-secondary'>
-                                {' '}
-                                {`{JSON} Placeholder`}{' '}
+                                {`{JSON} Placeholder`}
                             </h1>
                         </div>
                     </div>
@@ -37,7 +36,7 @@ const JsonPlaceHolderPage = ({ getJsonPosts, isJsonPostsLoad }: Props) => {
                                 type='button'
                                 className='btn btn-outline-secondary'
                                 onClick={() => {
-                                    jp.loadJsonPostsData();
+                                    jp.loadPortionJsonPosts();
                                 }}
                             >
                                 {`Загрузить следующие 10 постов c  {JSON}  Placeholder`}
@@ -50,9 +49,9 @@ const JsonPlaceHolderPage = ({ getJsonPosts, isJsonPostsLoad }: Props) => {
     );
 };
 
-const mapState = (store: IAppStore) => ({
-    getJsonPosts: getJsonPosts(store),
-    isJsonPostsLoad: isJsonPostsLoad(store),
+const mapState = (state: IAppState) => ({
+    getJsonPosts: getJsonPosts(state),
+    isJsonPostsLoad: isJsonPostsLoad(state),
 });
 
 const mapDispatch = {};

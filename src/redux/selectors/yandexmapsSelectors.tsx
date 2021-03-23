@@ -1,55 +1,55 @@
 import {
     IAddress,
-    IAppStore,
+    IAppState,
     IButtons,
     ICoordinates,
     IInputs,
 } from '../types/interfaces';
 
-export const ymInputs = (store: IAppStore): IInputs =>
-    store.yandexmaps.ymInputs;
-export const ymButtons = (store: IAppStore): IButtons =>
-    store.yandexmaps.ymButtons;
+export const ymInputs = (state: IAppState): IInputs =>
+    state.yandexmaps.ymInputs;
+export const ymButtons = (state: IAppState): IButtons =>
+    state.yandexmaps.ymButtons;
 
-export const isSetUserPosition = (store: IAppStore): boolean =>
-    store.yandexmaps.ymData.userPosition.coordinates.latitude !== 0 &&
-    store.yandexmaps.ymData.userPosition.coordinates.longitude !== 0 &&
-    store.yandexmaps.ymData.userPosition.address.fullAddress !== '' &&
-    store.yandexmaps.ymData.userPosition.address.region !== '' &&
-    store.yandexmaps.ymData.userPosition.address.shortAddress !== '';
+export const isSetUserPosition = (state: IAppState): boolean =>
+    state.yandexmaps.ymData.userPosition.coordinates.latitude !== 0 &&
+    state.yandexmaps.ymData.userPosition.coordinates.longitude !== 0 &&
+    state.yandexmaps.ymData.userPosition.address.fullAddress !== '' &&
+    state.yandexmaps.ymData.userPosition.address.region !== '' &&
+    state.yandexmaps.ymData.userPosition.address.shortAddress !== '';
 
-export const isSetDestinationPosition = (store: IAppStore): boolean =>
-    store.yandexmaps.ymData.destinationPosition.coordinates.latitude !== 0 &&
-    store.yandexmaps.ymData.destinationPosition.coordinates.longitude !== 0 &&
-    store.yandexmaps.ymData.destinationPosition.address.fullAddress !== '' &&
-    store.yandexmaps.ymData.destinationPosition.address.region !== '' &&
-    store.yandexmaps.ymData.destinationPosition.address.shortAddress !== '';
+export const isSetDestinationPosition = (state: IAppState): boolean =>
+    state.yandexmaps.ymData.destinationPosition.coordinates.latitude !== 0 &&
+    state.yandexmaps.ymData.destinationPosition.coordinates.longitude !== 0 &&
+    state.yandexmaps.ymData.destinationPosition.address.fullAddress !== '' &&
+    state.yandexmaps.ymData.destinationPosition.address.region !== '' &&
+    state.yandexmaps.ymData.destinationPosition.address.shortAddress !== '';
 
-export const getCurrentCoordinates = (store: IAppStore): ICoordinates =>
-    store.yandexmaps.ymData.userPosition.coordinates.latitude &&
-    store.yandexmaps.ymData.userPosition.coordinates.longitude
-        ? store.yandexmaps.ymData.userPosition.coordinates
-        : store.yandexmaps.ymData.defaultPosition.coordinates;
+export const getCurrentCoordinates = (state: IAppState): ICoordinates =>
+    state.yandexmaps.ymData.userPosition.coordinates.latitude &&
+    state.yandexmaps.ymData.userPosition.coordinates.longitude
+        ? state.yandexmaps.ymData.userPosition.coordinates
+        : state.yandexmaps.ymData.defaultPosition.coordinates;
 
-export const getCurrentAddress = (store: IAppStore): IAddress =>
-    store.yandexmaps.ymData.userPosition.address.fullAddress &&
-    store.yandexmaps.ymData.userPosition.address.region &&
-    store.yandexmaps.ymData.userPosition.address.shortAddress
-        ? store.yandexmaps.ymData.userPosition.address
-        : store.yandexmaps.ymData.defaultPosition.address;
+export const getCurrentAddress = (state: IAppState): IAddress =>
+    state.yandexmaps.ymData.userPosition.address.fullAddress &&
+    state.yandexmaps.ymData.userPosition.address.region &&
+    state.yandexmaps.ymData.userPosition.address.shortAddress
+        ? state.yandexmaps.ymData.userPosition.address
+        : state.yandexmaps.ymData.defaultPosition.address;
 
-export const getDestinationCoordinates = (store: IAppStore): ICoordinates =>
-    store.yandexmaps.ymData.destinationPosition.coordinates.latitude &&
-    store.yandexmaps.ymData.destinationPosition.coordinates.longitude
-        ? store.yandexmaps.ymData.destinationPosition.coordinates
-        : store.yandexmaps.ymData.defaultPosition.coordinates;
+export const getDestinationCoordinates = (state: IAppState): ICoordinates =>
+    state.yandexmaps.ymData.destinationPosition.coordinates.latitude &&
+    state.yandexmaps.ymData.destinationPosition.coordinates.longitude
+        ? state.yandexmaps.ymData.destinationPosition.coordinates
+        : state.yandexmaps.ymData.defaultPosition.coordinates;
 
-export const getDestinationAddress = (store: IAppStore): IAddress =>
-    store.yandexmaps.ymData.destinationPosition.address.fullAddress &&
-    store.yandexmaps.ymData.destinationPosition.address.region &&
-    store.yandexmaps.ymData.destinationPosition.address.shortAddress
-        ? store.yandexmaps.ymData.destinationPosition.address
-        : store.yandexmaps.ymData.defaultPosition.address;
+export const getDestinationAddress = (state: IAppState): IAddress =>
+    state.yandexmaps.ymData.destinationPosition.address.fullAddress &&
+    state.yandexmaps.ymData.destinationPosition.address.region &&
+    state.yandexmaps.ymData.destinationPosition.address.shortAddress
+        ? state.yandexmaps.ymData.destinationPosition.address
+        : state.yandexmaps.ymData.defaultPosition.address;
 
-export const getDefaultRegion = (store: IAppStore): string =>
-    store.yandexmaps.ymData.defaultPosition.address.region;
+export const getDefaultRegion = (state: IAppState): string =>
+    state.yandexmaps.ymData.defaultPosition.address.region;

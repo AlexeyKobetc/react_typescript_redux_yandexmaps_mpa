@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { ymButtons } from '../../../../../redux/selectors/yandexmapsSelectors';
-import { IAppStore } from '../../../../../redux/types/interfaces';
+import { IAppState } from '../../../../../redux/types/interfaces';
 
 import { Button } from '../Button';
 
@@ -25,7 +25,7 @@ const SubmitForm = ({ ymButtons }: Props) => {
     );
 };
 
-const mapState = (store: IAppStore) => ({ ymButtons: ymButtons(store) });
+const mapState = (state: IAppState) => ({ ymButtons: ymButtons(state) });
 
 const mapDispatch = {};
 

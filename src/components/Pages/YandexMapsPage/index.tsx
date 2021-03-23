@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
-import { IAppStore } from '../../../redux/types/interfaces';
+import { IAppState } from '../../../redux/types/interfaces';
 import {
     changeButtonLabel,
     collapseButton,
@@ -86,7 +86,7 @@ const YandexMapsPage = ({}: Props) => {
     );
 };
 
-const mapState = (store: IAppStore) => ({});
+const mapState = (state: IAppState) => ({});
 
 const mapDispatch = {};
 

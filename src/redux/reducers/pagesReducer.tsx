@@ -1,9 +1,9 @@
 import { pagesInit } from '../initialStore';
-import { IPagesStore } from '../types/interfaces';
+import { IPagesState } from '../types/interfaces';
 import { PagesActionsTypes, PagesActionType } from '../types/types';
 
 export const pageReducer = (
-    state: IPagesStore = pagesInit,
+    state: IPagesState = pagesInit,
     action: PagesActionType
 ) => {
     switch (action.type) {

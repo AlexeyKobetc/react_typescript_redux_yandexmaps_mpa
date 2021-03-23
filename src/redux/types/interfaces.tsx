@@ -3,19 +3,26 @@ import { ThunkAction } from 'redux-thunk';
 
 export type AppThunk<ReturnType = void> = ThunkAction<
     ReturnType,
-    IAppStore,
+    IAppState,
     unknown,
     Action<string>
 >;
 
-export interface IAppStore {
-    pages: IPagesStore;
-    meteo: IMeteoStore;
-    jsonposts: IJsonPostsStore;
-    yandexmaps: IYMStore;
+export interface ISuggestResponse {
+    displayName: string;
+    hl: number[][];
+    type: string;
+    value: string;
 }
 
-export interface IYMStore {
+export interface IAppState {
+    pages: IPagesState;
+    meteo: IMeteoState;
+    jsonposts: IJsonPostsState;
+    yandexmaps: IYMState;
+}
+
+export interface IYMState {
     ymData: IYMData;
     ymInputs: IInputs;
     ymButtons: IButtons;
@@ -56,12 +63,12 @@ export enum EYmData {
     DESTINATION_POSITION = 'destinationPosition',
 }
 
-export interface IPagesStore {
+export interface IPagesState {
     pages: IPages;
     activePath: IActivePath;
 }
 
-export interface IMeteoStore {
+export interface IMeteoState {
     countMeteoCellsOnScreen: number;
     currentMeteoData: IMeteoElement;
     fiveDayMeteoData: IFiveDayMeteoListElement[];
@@ -69,7 +76,7 @@ export interface IMeteoStore {
     isCurrentMeteoLoad: boolean | null;
 }
 
-export interface IJsonPostsStore {
+export interface IJsonPostsState {
     jsonposts: IPost[];
     postsCounts: {
         lenOfPostsLoadPortion: number;

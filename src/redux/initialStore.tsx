@@ -1,4 +1,3 @@
-import AboutPage from '../components/Pages/AboutPage';
 import JsonPlaceHolderPage from '../components/Pages/JsonPlaceHolderPage';
 import MainPage from '../components/Pages/MainPage';
 import MeteoPage from '../components/Pages/MeteoPage';
@@ -6,13 +5,12 @@ import YandexMapsPage from '../components/Pages/YandexMapsPage';
 import {
     IActivePath,
     IButtons,
-    IGeoMarker,
     IInputs,
-    IJsonPostsStore,
-    IMeteoStore,
+    IJsonPostsState,
+    IMeteoState,
     IPages,
     IYMData,
-    IYMStore,
+    IYMState,
 } from './types/interfaces';
 
 const pages: IPages = {
@@ -41,13 +39,6 @@ const pages: IPages = {
         isExact: false,
         isActive: false,
     },
-    // ,
-    // Описание: {
-    //   path: "/about",
-    //   component: AboutPage,
-    //   isExact: false,
-    //   isActive: false
-    // }
 };
 
 const activePath: IActivePath = { activePath: '/' };
@@ -57,7 +48,7 @@ export const pagesInit = {
     activePath,
 };
 
-export const meteoInit: IMeteoStore = {
+export const meteoInit: IMeteoState = {
     countMeteoCellsOnScreen: 1,
     currentMeteoData: { temp: 0, deg: 0, speed: 0, description: '', icon: '' },
     fiveDayMeteoData: [],
@@ -65,7 +56,7 @@ export const meteoInit: IMeteoStore = {
     isCurrentMeteoLoad: null,
 };
 
-export const jsonpostsInit: IJsonPostsStore = {
+export const jsonpostsInit: IJsonPostsState = {
     jsonposts: [],
     postsCounts: {
         lenOfPostsLoadPortion: 10,
@@ -158,36 +149,16 @@ const ymInputs: IInputs = {
         ],
         isYandex: false,
     },
-    // ,
-    // inputComment: {
-    //   textarea: true,
-    //   labelText: "Комментарий для водителя",
-    //   placeHolder: "Комментарий для водителя",
-    //   helpText: "Если есть особые пожелания, напишите их здесь.",
-    //   errorLabel:
-    //     "  Комментарий может содержать только русские или латинские символы, цифры и знаки пунктуации.",
-    //   value: "",
-    //   isValid: null,
-    //   isDisable: false,
-    //   maxLen: 250,
-    //   regEx: [/^[\u0400-\u04FFa-zA-Z0-9.,?!\-\n\r ]+$/],
-    //   isYandex: false
-    // }
 };
 
 export const ymButtons: IButtons = {
     ok: {
-        labelText: 'Заказать',
+        labelText: 'Ок',
         disabled: false,
     },
-    // ,
-    // help: {
-    //   labelText: "Инструкция",
-    //   disabled: false
-    // }
 };
 
-export const ymInit: IYMStore = {
+export const ymInit: IYMState = {
     ymData,
     ymInputs,
     ymButtons,

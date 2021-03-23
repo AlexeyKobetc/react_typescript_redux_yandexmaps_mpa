@@ -1,16 +1,16 @@
 import {
-    IAppStore,
+    IAppState,
     IFiveDayMeteoListElement,
     IMeteoElement,
 } from '../types/interfaces';
 
-export const getCurrentMeteo = (store: IAppStore): IMeteoElement =>
-    store.meteo.currentMeteoData;
-export const getFiveDayMeteo = (store: IAppStore): IFiveDayMeteoListElement[] =>
-    store.meteo.fiveDayMeteoData.slice(0, getCountMeteoCellsOnScreen(store));
-export const isCurrentMeteoLoad = (store: IAppStore): boolean | null =>
-    store.meteo.isCurrentMeteoLoad;
-export const isFiveDayMeteoLoad = (store: IAppStore): boolean | null =>
-    store.meteo.isFiveDayMeteoLoad;
-export const getCountMeteoCellsOnScreen = (store: IAppStore): number =>
-    store.meteo.countMeteoCellsOnScreen;
+export const getCurrentMeteo = (state: IAppState): IMeteoElement =>
+    state.meteo.currentMeteoData;
+export const getFiveDayMeteo = (state: IAppState): IFiveDayMeteoListElement[] =>
+    state.meteo.fiveDayMeteoData.slice(0, getCountMeteoCellsOnScreen(state));
+export const isCurrentMeteoLoad = (state: IAppState): boolean | null =>
+    state.meteo.isCurrentMeteoLoad;
+export const isFiveDayMeteoLoad = (state: IAppState): boolean | null =>
+    state.meteo.isFiveDayMeteoLoad;
+export const getCountMeteoCellsOnScreen = (state: IAppState): number =>
+    state.meteo.countMeteoCellsOnScreen;

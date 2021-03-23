@@ -4,6 +4,7 @@ import {
     ICoordinates,
     IGeoMarker,
     IPosition,
+    ISuggestResponse,
 } from '../redux/types/interfaces';
 import { store } from '../redux/Store';
 import {
@@ -20,9 +21,11 @@ import {
     getDefaultRegion,
     getDestinationAddress,
     getDestinationCoordinates,
+    isSetDestinationPosition,
     isSetUserPosition,
     ymInputs,
 } from '../redux/selectors/yandexmapsSelectors';
+import React from 'react';
 
 declare var ymaps: any;
 
@@ -34,9 +37,7 @@ async function adressToCoordsCodding<T>(address: string): Promise<T> {
     return await responce.geoObjects.get(0).geometry.getCoordinates();
 }
 
-async function coordsToAddressCodding<T>(
-    coordinates: ICoordinates
-): Promise<T> {
+async function coordsToAddressCodding<T>(coordinates: ICoordinates): Promise<T> {
     const { latitude, longitude } = coordinates;
     const responce = await ymaps.geocode([latitude, longitude]);
     return await responce.geoObjects.get(0).properties.getAll();
@@ -51,10 +52,20 @@ async function getGeolocation<T>(provider: string = 'yandex'): Promise<T> {
     return await location;
 }
 
-export async function checkAddress<T>(
-    address: string,
-    region: string
-): Promise<T> {
+async function getSugges<T>(inputName: string, inputValue: string): Promise<T> {
+    return await ymaps.suggest(
+        inputName === 'inputSourceAddress'
+            ? getCurrentAddress(store.getState()).region + inputValue
+            : isSetDestinationPosition(store.getState())
+            ? getDestinationAddress(store.getState()).region + inputValue
+            : getCurrentAddress(store.getState()).region + inputValue,
+        {
+            results: 20,
+        }
+    );
+}
+
+export async function checkAddress<T>(address: string, region: string): Promise<T> {
     return (await ymaps.geocode(region + ' ' + address)) as Promise<T>;
 }
 
@@ -74,6 +85,16 @@ class YandexMaps {
         labelTextHeader: 'Вам нужно сюда: ',
     };
 
+    private _ymInputs: {
+        [name: string]: {
+            suggest: ISuggestResponse[];
+            suggestListDomElement: HTMLUListElement;
+            parentOfInputDomElement: HTMLElement;
+        };
+    } = {};
+
+    private _suggestTimer: NodeJS.Timeout | null = null;
+
     private _currentMapZoom: number = 15;
 
     private _isYmApiReady: boolean = false;
@@ -87,6 +108,10 @@ class YandexMaps {
 
     protected get ym() {
         return this._ym;
+    }
+
+    public suggestItems(inputName: string) {
+        if (this._ymInputs[inputName]) return this._ymInputs[inputName];
     }
 
     protected set currentMapZoom(currentMapZoom: number) {
@@ -134,10 +159,7 @@ class YandexMaps {
         }, 500);
     };
 
-    protected initMap = (
-        currentMapZoom: number,
-        ymDivContainer: HTMLDivElement
-    ) => {
+    protected initMap = (currentMapZoom: number, ymDivContainer: HTMLDivElement) => {
         const createMap = (coordinates: ICoordinates) => {
             return new ymaps.Map(ymDivContainer, {
                 center: [coordinates.latitude, coordinates.longitude],
@@ -167,9 +189,7 @@ class YandexMaps {
                 this.drawPosition(EYmData.USER_POSITION);
             }
             if (this._ymDestinationGeoMarker.ymGeoMarker) {
-                this.ym.geoObjects.add(
-                    this._ymDestinationGeoMarker.ymGeoMarker
-                );
+                this.ym.geoObjects.add(this._ymDestinationGeoMarker.ymGeoMarker);
             }
             this.ym.events.add('contextmenu', this.mapHandler);
             this.ym.events.add('click', this.mapHandler);
@@ -301,7 +321,7 @@ class YandexMaps {
             );
 
             this.ym.geoObjects.add(mapMarker.ymGeoMarker);
-            //this.ym.setCenter([latitude, longitude]);
+            this.ym.setCenter([latitude, longitude]);
 
             mapMarker.ymGeoMarker.events.add('dragend', (ymEvent: any) => {
                 const target: any = ymEvent.get('target');
@@ -327,7 +347,7 @@ class YandexMaps {
                 'hintContent',
                 markerAddress.fullAddress
             );
-            //this.ym.setCenter([latitude, longitude]);
+            this.ym.setCenter([latitude, longitude]);
         }
     };
 
@@ -340,11 +360,9 @@ class YandexMaps {
                             const coordinates: number[] = location.geoObjects
                                 .get(0)
                                 .geometry.getCoordinates();
-                            const {
-                                description,
-                                name,
-                                text,
-                            } = location.geoObjects.get(0).properties.getAll();
+                            const { description, name, text } = location.geoObjects
+                                .get(0)
+                                .properties.getAll();
                             resolve({
                                 address: {
                                     region: description,
@@ -359,9 +377,7 @@ class YandexMaps {
                         } else {
                             resolve({
                                 address: getCurrentAddress(store.getState()),
-                                coordinates: getCurrentCoordinates(
-                                    store.getState()
-                                ),
+                                coordinates: getCurrentCoordinates(store.getState()),
                             });
                         }
                     })
@@ -452,11 +468,7 @@ class YandexMaps {
         checkAddress<any>(inputValue, region)
             .then(geoData => {
                 const geoObject = geoData.geoObjects.get(0);
-                const {
-                    description,
-                    name,
-                    text,
-                } = geoObject.properties.getAll();
+                const { description, name, text } = geoObject.properties.getAll();
                 const coordinates = geoObject.geometry.getCoordinates();
                 const precision = geoObject.properties.get(
                     'metaDataProperty.GeocoderMetaData.precision'
@@ -510,7 +522,8 @@ class YandexMaps {
         isYandexMapsAddressInput: boolean
     ) => {
         if (isYandexMapsAddressInput) {
-            store.dispatch(setInputValue(inputName, inputValue));
+            setTimeout(() => this.unDrawSuggestList(inputName), 500);
+
             this.checkInputValueAddress(inputName, inputValue, true);
         }
     };
@@ -522,6 +535,35 @@ class YandexMaps {
         maxLen: number,
         isYandexMapsAddressInput: boolean
     ) => {
+        if (isYandexMapsAddressInput && this.isYmApiReady) {
+            if (this._suggestTimer === null) {
+                getSugges<ISuggestResponse[]>(inputName, inputValue).then(suggest => {
+                    this._ymInputs = {
+                        ...this._ymInputs,
+                        [inputName]: {
+                            ...this._ymInputs[inputName],
+                            suggest,
+                        },
+                    };
+                    this.drawSuggestList(inputName);
+                });
+
+                this._suggestTimer = setTimeout(() => {
+                    getSugges<ISuggestResponse[]>(inputName, inputValue).then(suggest => {
+                        this._ymInputs = {
+                            ...this._ymInputs,
+                            [inputName]: {
+                                ...this._ymInputs[inputName],
+                                suggest,
+                            },
+                        };
+                        this.drawSuggestList(inputName);
+                    });
+                    this._suggestTimer = null;
+                }, 500);
+            }
+        }
+
         const isValid =
             validRegEx?.reduce((isValid: boolean, reg: RegExp) => {
                 return isValid || reg.test(inputValue.trim());
@@ -531,9 +573,7 @@ class YandexMaps {
             store.dispatch(setInputValue(inputName, inputValue));
             this.checkInputValueAddress(inputName, inputValue);
         } else {
-            store.dispatch(
-                setInputValue(inputName, inputValue.trim().slice(0, maxLen))
-            );
+            store.dispatch(setInputValue(inputName, inputValue.trim().slice(0, maxLen)));
             store.dispatch(setInputValid(inputName, isValid));
         }
 
@@ -548,6 +588,87 @@ class YandexMaps {
         }
         if (isInputsValid) {
             store.dispatch(setButtonDisabled('ok', false));
+        }
+    };
+
+    private selectSuggestList = (event: Event, inputName: string, inputValue: string) => {
+        const { type, target } = event;
+
+        if (type === 'mouseout' || type === 'mouseover') {
+            (target as HTMLLIElement).classList.toggle('active');
+        }
+        if (type === 'click') {
+            this.checkInputValueAddress(inputName, inputValue, true);
+        }
+    };
+
+    private unDrawSuggestList = (inputName: string) => {
+        if (
+            this._ymInputs[inputName] &&
+            this._ymInputs[inputName].parentOfInputDomElement
+        ) {
+            const inputParent = this._ymInputs[inputName].parentOfInputDomElement;
+            const prevUlChildElement: HTMLUListElement | null = inputParent.querySelector(
+                'ul'
+            );
+
+            prevUlChildElement && inputParent.removeChild(prevUlChildElement);
+        }
+    };
+
+    private drawSuggestList = (inputName: string) => {
+        if (
+            this._ymInputs[inputName] &&
+            this._ymInputs[inputName].parentOfInputDomElement
+        ) {
+            const suggestList = document.createElement('ul');
+            suggestList.classList.add('list-group');
+            suggestList.style.zIndex = '100';
+
+            const inputParent = this._ymInputs[inputName].parentOfInputDomElement;
+
+            this._ymInputs[inputName].suggest.forEach((suggestItem: ISuggestResponse) => {
+                const suggestListItem = document.createElement('li');
+                suggestListItem.classList.add('list-group-item');
+                suggestListItem.textContent = suggestItem.value;
+                suggestListItem.addEventListener('mouseover', (event: Event) =>
+                    this.selectSuggestList(event, inputName, suggestItem.value)
+                );
+                suggestListItem.addEventListener('mouseout', (event: Event) =>
+                    this.selectSuggestList(event, inputName, suggestItem.value)
+                );
+                suggestListItem.addEventListener('click', (event: Event) =>
+                    this.selectSuggestList(event, inputName, suggestItem.value)
+                );
+
+                suggestList.appendChild(suggestListItem);
+            });
+            if (suggestList) {
+                suggestList.style.position = 'absolute';
+            }
+            if (inputParent) {
+                this.unDrawSuggestList(inputName);
+                inputParent.style.position = 'relative';
+                inputParent.appendChild(suggestList);
+            }
+        }
+    };
+
+    public getInputDomElement = (
+        inputName: string,
+        inputDomElement: HTMLInputElement | null
+    ) => {
+        if (inputDomElement) {
+            const parentOfInputDomElement = inputDomElement.parentElement;
+            if (parentOfInputDomElement) {
+                this._ymInputs = {
+                    ...this._ymInputs,
+                    [inputName]: {
+                        ...this._ymInputs[inputName],
+                        parentOfInputDomElement,
+                    },
+                };
+            }
         }
     };
 }

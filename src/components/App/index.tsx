@@ -5,7 +5,7 @@ import { Route, Switch, useLocation } from 'react-router-dom';
 import { setActivePath } from '../../redux/actions/pagesActions';
 import { getPages } from '../../redux/selectors/pageSelectors';
 
-import { IAppStore } from '../../redux/types/interfaces';
+import { IAppState } from '../../redux/types/interfaces';
 
 import NoPage from '../Pages/NoPage';
 
@@ -38,8 +38,8 @@ const App = ({ getPages, setActivePath }: Props) => {
     );
 };
 
-const mapState = (store: IAppStore) => ({
-    getPages: getPages(store),
+const mapState = (state: IAppState) => ({
+    getPages: getPages(state),
 });
 
 const mapDispatch = {

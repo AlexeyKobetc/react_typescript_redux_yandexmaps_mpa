@@ -9,7 +9,6 @@ import {
 
 import { store } from '../redux/Store';
 import {
-    IAppStore,
     ICurrentMeteoFetchedData,
     IFiveDayMeteoFetchedData,
     IFiveDayMeteoListElement,

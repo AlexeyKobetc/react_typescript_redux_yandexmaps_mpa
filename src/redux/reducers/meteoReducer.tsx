@@ -1,9 +1,9 @@
 import { meteoInit } from '../initialStore';
-import { IMeteoStore } from '../types/interfaces';
+import { IMeteoState } from '../types/interfaces';
 import { MeteoActionsTypes, MeteoActionType } from '../types/types';
 
 export const meteoReducer = (
-    state: IMeteoStore = meteoInit,
+    state: IMeteoState = meteoInit,
     action: MeteoActionType
 ) => {
     switch (action.type) {
