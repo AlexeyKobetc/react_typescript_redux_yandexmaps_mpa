@@ -10,6 +10,14 @@ export const savePosition = (
     payload: { namePosition, coordinates, address },
 });
 
+export const setRegionInInputLabel = (
+    inputName: string,
+    regionName: string
+): YmActionType => ({
+    type: YandexMapsActionsTypes.SET_REGION_IN_INPUT_LABEL,
+    payload: { inputName, regionName },
+});
+
 export const setSourceInputValue = (inputValue: string): YmActionType => ({
     type: YandexMapsActionsTypes.SET_SOURCE_INPUT_VALUE,
     payload: { inputName: 'inputSourceAddress', inputValue },
@@ -20,18 +28,12 @@ export const setDestinationInputValue = (inputValue: string): YmActionType => ({
     payload: { inputName: 'inputDestinationAddress', inputValue },
 });
 
-export const setInputValue = (
-    inputName: string,
-    inputValue: string
-): YmActionType => ({
+export const setInputValue = (inputName: string, inputValue: string): YmActionType => ({
     type: YandexMapsActionsTypes.INPUT_VALUE_CHANGE,
     payload: { inputName, inputValue },
 });
 
-export const setInputValid = (
-    inputName: string,
-    isValid: boolean
-): YmActionType => ({
+export const setInputValid = (inputName: string, isValid: boolean): YmActionType => ({
     type: YandexMapsActionsTypes.INPUT_VALID_CHANGE,
     payload: { inputName, isValid },
 });

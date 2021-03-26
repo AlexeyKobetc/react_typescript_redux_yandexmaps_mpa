@@ -105,6 +105,7 @@ export enum YandexMapsActionsTypes {
     SAVE_POSITION = 'SAVE_POSITION',
     SET_SOURCE_INPUT_VALUE = 'SET_SOURCE_INPUT_VALUE',
     SET_DESTINATION_INPUT_VALUE = 'SET_DESTINATION_INPUT_VALUE',
+    SET_REGION_IN_INPUT_LABEL = 'SET_REGION_IN_INPUT_LABEL',
     INPUT_VALUE_CHANGE = 'INPUT_VALUE_CHANGE',
     INPUT_VALID_CHANGE = 'INPUT_VALID_CHANGE',
     BUTTON_SET_DISABLED = 'BUTTON_SET_DISABLED',
@@ -129,6 +130,11 @@ interface ISetDestinationInputValue {
     payload: { inputName: string; inputValue: string };
 }
 
+interface ISetRegionInInputLabel {
+    type: typeof YandexMapsActionsTypes.SET_REGION_IN_INPUT_LABEL;
+    payload: { inputName: string; regionName: string };
+}
+
 interface IInputValueChange {
     type: typeof YandexMapsActionsTypes.INPUT_VALUE_CHANGE;
     payload: { inputName: string; inputValue: string };
@@ -148,6 +154,7 @@ export type YmActionType =
     | ISavePosition
     | ISetSourceInputValue
     | ISetDestinationInputValue
+    | ISetRegionInInputLabel
     | IInputValueChange
     | IInputValidChange
     | IButtonsetDisabled;

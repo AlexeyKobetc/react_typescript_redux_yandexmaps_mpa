@@ -13,6 +13,7 @@ import {
     setDestinationInputValue,
     setInputValid,
     setInputValue,
+    setRegionInInputLabel,
     setSourceInputValue,
 } from '../redux/actions/yandexmapsActions';
 import {
@@ -39,8 +40,8 @@ async function adressToCoordsCodding<T>(address: string): Promise<T> {
 
 async function coordsToAddressCodding<T>(coordinates: ICoordinates): Promise<T> {
     const { latitude, longitude } = coordinates;
-    const responce = await ymaps.geocode([latitude, longitude]);
-    return await responce.geoObjects.get(0).properties.getAll();
+    const location = await ymaps.geocode([latitude, longitude]);
+    return await location;
 }
 
 async function getGeolocation<T>(provider: string = 'yandex'): Promise<T> {
@@ -230,18 +231,38 @@ class YandexMaps {
         } else if (!coordinates && !address) {
             this.drawMapMarker(namePosition);
         } else if (coordinates && !address) {
-            coordsToAddressCodding<{
-                description: string;
-                name: string;
-                text: string;
-            }>(coordinates)
-                .then(address => {
-                    const { description, name, text } = address;
+            coordsToAddressCodding(coordinates)
+                .then((location: any) => {
+                    const { description, name, text } = location.geoObjects
+                        .get(0)
+                        .properties.getAll();
+
+                    const {
+                        GeocoderMetaData: {
+                            AddressDetails: {
+                                Country: {
+                                    AdministrativeArea: { AdministrativeAreaName },
+                                },
+                            },
+                        },
+                    } = location.geoObjects.get(0).properties.get('metaDataProperty');
+
+                    store.dispatch(
+                        setRegionInInputLabel(
+                            namePosition === EYmData.USER_POSITION
+                                ? 'inputSourceAddress'
+                                : 'inputDestinationAddress',
+                            AdministrativeAreaName ? AdministrativeAreaName : description
+                        )
+                    );
+
                     store.dispatch(
                         savePosition(
                             coordinates,
                             {
-                                region: description,
+                                region: AdministrativeAreaName
+                                    ? AdministrativeAreaName
+                                    : description,
                                 fullAddress: text,
                                 shortAddress: name,
                             },
@@ -363,9 +384,35 @@ class YandexMaps {
                             const { description, name, text } = location.geoObjects
                                 .get(0)
                                 .properties.getAll();
+
+                            const {
+                                GeocoderMetaData: {
+                                    AddressDetails: {
+                                        Country: {
+                                            AdministrativeArea: {
+                                                AdministrativeAreaName,
+                                            },
+                                        },
+                                    },
+                                },
+                            } = location.geoObjects
+                                .get(0)
+                                .properties.get('metaDataProperty');
+
+                            store.dispatch(
+                                setRegionInInputLabel(
+                                    'inputSourceAddress',
+                                    AdministrativeAreaName
+                                        ? AdministrativeAreaName
+                                        : description
+                                )
+                            );
+
                             resolve({
                                 address: {
-                                    region: description,
+                                    region: AdministrativeAreaName
+                                        ? AdministrativeAreaName
+                                        : description,
                                     fullAddress: text,
                                     shortAddress: name,
                                 },
@@ -473,6 +520,23 @@ class YandexMaps {
                 const precision = geoObject.properties.get(
                     'metaDataProperty.GeocoderMetaData.precision'
                 );
+                const {
+                    GeocoderMetaData: {
+                        AddressDetails: {
+                            Country: {
+                                AdministrativeArea: { AdministrativeAreaName },
+                            },
+                        },
+                    },
+                } = geoData.geoObjects.get(0).properties.get('metaDataProperty');
+
+                store.dispatch(
+                    setRegionInInputLabel(
+                        inputName,
+                        AdministrativeAreaName ? AdministrativeAreaName : description
+                    )
+                );
+
                 if (precision === 'other') {
                     store.dispatch(setInputValid(inputName, false));
                 } else {
@@ -486,7 +550,9 @@ class YandexMaps {
                                 longitude: coordinates[1],
                             },
                             {
-                                region: description,
+                                region: AdministrativeAreaName
+                                    ? AdministrativeAreaName
+                                    : description,
                                 fullAddress: text,
                                 shortAddress: name,
                             }
@@ -523,7 +589,6 @@ class YandexMaps {
     ) => {
         if (isYandexMapsAddressInput) {
             setTimeout(() => this.unDrawSuggestList(inputName), 500);
-
             this.checkInputValueAddress(inputName, inputValue, true);
         }
     };
@@ -535,32 +600,28 @@ class YandexMaps {
         maxLen: number,
         isYandexMapsAddressInput: boolean
     ) => {
+        const getSuggestItems = () => {
+            getSugges<ISuggestResponse[]>(inputName, inputValue).then(suggest => {
+                this._ymInputs = {
+                    ...this._ymInputs,
+                    [inputName]: {
+                        ...this._ymInputs[inputName],
+                        suggest,
+                    },
+                };
+                suggest.length
+                    ? store.dispatch(setInputValid(inputName, true))
+                    : store.dispatch(setInputValid(inputName, false));
+                this.drawSuggestList(inputName);
+            });
+        };
+
         if (isYandexMapsAddressInput && this.isYmApiReady) {
             if (this._suggestTimer === null) {
-                getSugges<ISuggestResponse[]>(inputName, inputValue).then(suggest => {
-                    this._ymInputs = {
-                        ...this._ymInputs,
-                        [inputName]: {
-                            ...this._ymInputs[inputName],
-                            suggest,
-                        },
-                    };
-                    this.drawSuggestList(inputName);
-                });
-
                 this._suggestTimer = setTimeout(() => {
-                    getSugges<ISuggestResponse[]>(inputName, inputValue).then(suggest => {
-                        this._ymInputs = {
-                            ...this._ymInputs,
-                            [inputName]: {
-                                ...this._ymInputs[inputName],
-                                suggest,
-                            },
-                        };
-                        this.drawSuggestList(inputName);
-                    });
+                    getSuggestItems();
                     this._suggestTimer = null;
-                }, 500);
+                }, 200);
             }
         }
 
@@ -571,7 +632,6 @@ class YandexMaps {
 
         if (isYandexMapsAddressInput) {
             store.dispatch(setInputValue(inputName, inputValue));
-            this.checkInputValueAddress(inputName, inputValue);
         } else {
             store.dispatch(setInputValue(inputName, inputValue.trim().slice(0, maxLen)));
             store.dispatch(setInputValid(inputName, isValid));
